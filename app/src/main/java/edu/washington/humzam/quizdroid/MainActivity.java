@@ -1,5 +1,6 @@
 package edu.washington.humzam.quizdroid;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,7 +15,7 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
-    public String[] topics = {"Math", "Physics", "Marvel Super Heroes", "Android"};
+    public String[] topics = {"Math", "Physics", "Marvel Super Heroes"};
     private ListView list;
 
     @Override
@@ -29,6 +30,7 @@ public class MainActivity extends ActionBarActivity {
         list.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Go bring some other activity around the item selected
+                Intent next = new Intent(MainActivity.this, NextActivity.class);
             }
         });
     }

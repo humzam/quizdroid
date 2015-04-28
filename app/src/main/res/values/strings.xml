@@ -3,4 +3,5 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="math_desc">These are questions relating to Mathematics. There will be geometry, algebra, and calculus questions in this topic.</string>
 </resources>
