@@ -4,4 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="math_desc">These are questions relating to Mathematics. There will be geometry, algebra, and calculus questions in this topic.</string>
+    <string name="physics_desc">These are questions relating to Physics. This section will probably suck a lot.</string>
+    <string name="marvel_desc">These are questions relating to Marvel Super Heroes. This section will be a lot of fun.</string>
 </resources>
