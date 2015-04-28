@@ -9,18 +9,27 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 public class MathActivity extends ActionBarActivity {
+
+    Button beginMath;
+    Button beginPhysics;
+    Button beginMarvel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent launchingIntent = getIntent();
-        String topic = launchingIntent.getStringExtra("topic");
+        final String topic = launchingIntent.getStringExtra("topic");
 
+        // show the appropriate topic overview page depending on what was clicked in MainActivity
         if (topic.equals("Math")) {
            setContentView(R.layout.activity_topic_math);
         } else if (topic.equals("Physics")) {
@@ -29,12 +38,29 @@ public class MathActivity extends ActionBarActivity {
             setContentView(R.layout.activity_topic_marvel);
         }
 
+        beginMath = (Button) findViewById(R.id.math_begin);
+        beginPhysics = (Button) findViewById(R.id.physics_begin);
+        beginMarvel = (Button) findViewById(R.id.marvel_begin);
 
-        // how to get the intent
+        ArrayList<Button> buttons = new ArrayList<Button>();
+        buttons.add(beginMath);
+        buttons.add(beginPhysics);
+        buttons.add(beginMarvel);
 
-//        TextView txt = (TextView) findViewById();
-//        txt.setText(now);
-    }
+        // sets onClickListeners for all the buttons
+        for (Button button : buttons) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent startQuiz = new Intent(MathActivity.this, QuestionActivity.class);
+                    startQuiz.putExtra("topic", topic);
+                    startActivity(startQuiz);
+                    finish();
+                }
+            });
+        }
+
+       }
 
 
     @Override
