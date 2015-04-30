@@ -30,7 +30,7 @@ public class MainActivity extends ActionBarActivity {
         list.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Go bring some other activity around the item selected
-                Intent next = new Intent(MainActivity.this, MathActivity.class);
+                Intent next = new Intent(MainActivity.this, TopicActivity.class);
                 next.putExtra("topic", topics[position]);
                 startActivity(next);
                 finish();

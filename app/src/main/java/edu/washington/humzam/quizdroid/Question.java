@@ -1,9 +1,11 @@
 package edu.washington.humzam.quizdroid;
 
+import java.io.Serializable;
+
 /**
  * Created by humzamangrio on 4/28/15.
  */
-public class Question {
+public class Question implements Serializable {
 
     private String question;
     private String option1;

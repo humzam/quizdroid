@@ -2,15 +2,11 @@ package edu.washington.humzam.quizdroid;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,15 +16,33 @@ import java.util.ArrayList;
  */
 public class QuestionActivity extends Activity{
 
+    RadioButton option1;
+    RadioButton option2;
+    RadioButton option3;
+    RadioButton option4;
+    RadioButton radioButton;
+    Button submit;
+    TextView yourAnswer;
+    TextView correctAnswer;
+    ArrayList<Question> questions;
+    int pos = 0;
+    String selection;
+    String topic;
+    int total_questions;
+    int total_correct;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         Intent launchingIntent = getIntent();
-        final String topic = launchingIntent.getStringExtra("topic");
+        topic = launchingIntent.getStringExtra("topic");
+        Bundle b = launchingIntent.getExtras();
+        pos = b.getInt("pos");
+        total_questions = b.getInt("total questions");
+        total_correct = b.getInt("total correct");
 
-        ArrayList<Question> questions;
+
         if (topic.equals("Math")) {
             questions = getMathQuestions();
         } else if (topic.equals("Physics")) {
@@ -36,12 +50,102 @@ public class QuestionActivity extends Activity{
         } else {
             questions = getMarvelQuestions();
         }
+        setContentView(R.layout.question_layout);
+
+        nextQuestion(pos);
+        yourAnswer = (TextView) findViewById(R.id.your_answer_text);
+        correctAnswer = (TextView) findViewById(R.id.correct_answer_text);
+
+        submit = (Button) findViewById(R.id.submit_btn);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                setContentView(R.layout.answer_layout);
+//                yourAnswer.setText(answer.getText());
+//                correctAnswer.setText(questions.get(pos).getAnswer());
+//                if (pos >= questions.size()) {
+//                    next.setVisibility(View.GONE);
+//                    finish.setVisibility(View.VISIBLE);
+//                } else {
+//                    next.setVisibility(View.VISIBLE);
+//                    finish.setVisibility(View.GONE);
+//                }
+                Intent showAnswer = new Intent(QuestionActivity.this, AnswerActivity.class);
+                RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+                int radioGroupID = radioGroup.getCheckedRadioButtonId();
+                if (radioGroupID != -1) {
+                    radioButton = (RadioButton) findViewById(radioGroupID);
+                    selection = radioButton.getText().toString();
+                    showAnswer.putExtra("pos", pos);
+                    showAnswer.putExtra("size", questions.size());
+                    showAnswer.putExtra("answer", selection);
+                    showAnswer.putExtra("correct", questions.get(pos).getAnswer());
+                    showAnswer.putExtra("questions", questions);
+                    showAnswer.putExtra("topic", topic);
+                    if (selection.equals(questions.get(pos).getAnswer())) {
+                        total_correct++;
+                    }
+                    total_questions++;
+                    showAnswer.putExtra("total questions", total_questions);
+                    showAnswer.putExtra("total correct", total_correct);
+                    boolean hasMoreQuestions = true;
+                    if (pos + 1 >= questions.size()) {
+                        hasMoreQuestions = false;
+                    }
+                    showAnswer.putExtra("end", hasMoreQuestions);
+                    startActivity(showAnswer);
+                    finish();
+                }
+            }
+        });
+
+//        next = (Button) findViewById(R.id.next_btn);
+//        next.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                setContentView(R.layout.question_layout);
+//                pos++;
+//                nextQuestion(pos);
+//                if (pos >= questions.size()) {
+//                    next.setVisibility(View.GONE);
+//                    finish.setVisibility(View.VISIBLE);
+//                } else {
+//                    next.setVisibility(View.VISIBLE);
+//                    finish.setVisibility(View.GONE);
+//                }
+//            }
+//        });
+
+//        finish = (Button) findViewById(R.id.finish_btn);
+//        finish.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                pos = 0;
+//                Intent startOver = new Intent(QuestionActivity.this, MainActivity.class);
+//                startActivity(startOver);
+//                finish();
+//            }
+//        });
+    }
+
+    public void nextQuestion(int pos) {
+        TextView question = (TextView) findViewById(R.id.question_title_text_view);
+        question.setText("" + questions.get(pos).getQuestion());
+        option1 = (RadioButton) findViewById(R.id.radioButton1);
+        option1.setText("" + questions.get(pos).getOption1());
+        option2 = (RadioButton) findViewById(R.id.radioButton2);
+        option2.setText("" + questions.get(pos).getOption2());
+        option3 = (RadioButton) findViewById(R.id.radioButton3);
+        option3.setText("" + questions.get(pos).getOption3());
+        option4 = (RadioButton) findViewById(R.id.radioButton4);
+        option4.setText("" + questions.get(pos).getOption4());
+
     }
 
     public ArrayList<Question> getMathQuestions() {
         ArrayList<Question> questions = new ArrayList<Question>();
         questions.add(new Question("What is 1 + 1?", "3", "2", "0", "1", "2"));
-        questions.add(new Question("What is the 2 raised to the sixth power?", "64", "4", "16", "32", "2"));
+        questions.add(new Question("What is the 2 raised to the sixth power?", "64", "4", "16", "32", "64"));
         questions.add(new Question("What is the derivative of 5x^2?", "3x", "10x^2", "5x^2", "10x", "10x"));
         return questions;
     }

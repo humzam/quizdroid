@@ -17,8 +17,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MathActivity"
+            android:name=".TopicActivity"
             android:label="Topic Overview" >
+        </activity>
+        <activity
+            android:name=".QuestionActivity"
+            android:label="Quiz" >
+        </activity>
+        <activity
+            android:name=".AnswerActivity"
+            android:label="Answer" >
         </activity>
     </application>
 
