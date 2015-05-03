@@ -5,6 +5,8 @@ package edu.washington.humzam.quizdroid;
  */
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -54,16 +56,18 @@ public class TopicActivity extends Activity {
         Bundle b = launchingIntent.getExtras();
         topic = b.getString("topic");
 
+//        setContentView(R.layout.topic_layout);
+
         // show the appropriate topic overview page depending on what was clicked in MainActivity
         if (topic.equals("Math")) {
-           setContentView(R.layout.activity_topic_math);
-            questions = getMathQuestions();
+//           setContentView(R.layout.activity_topic_math);
+           questions = getMathQuestions();
         } else if (topic.equals("Physics")) {
-           setContentView(R.layout.activity_topic_physics);
+//           setContentView(R.layout.activity_topic_physics);
            questions = getPhysicsQuestions();
         } else {
-            setContentView(R.layout.activity_topic_marvel);
-            questions = getMarvelQuestions();
+//           setContentView(R.layout.activity_topic_marvel);
+           questions = getMarvelQuestions();
         }
 
 
@@ -72,11 +76,16 @@ public class TopicActivity extends Activity {
             beginMath.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                i("TopicActivity", "begin math button clicked");
-                    Intent startMath = new Intent(TopicActivity.this, QuestionActivity.class);
-                    startMath.putExtra("topic", topic);
-                    startActivity(startMath);
-                    finish();
+                i("TopicActivity", "begin math button clicked");
+//                    Intent startMath = new Intent(TopicActivity.this, QuestionActivity.class);
+//                    startMath.putExtra("topic", topic);
+//                    startActivity(startMath);
+//                    finish();
+
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.container, new MathFragment());
+                    ft.commit();
                 }
             });
         }

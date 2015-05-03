@@ -1,11 +1,14 @@
 package edu.washington.humzam.quizdroid;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
  * Created by humzamangrio on 4/28/15.
  */
-public class Question implements Serializable {
+public class Question implements Parcelable {
 
     private String question;
     private String option1;
@@ -47,4 +50,18 @@ public class Question implements Serializable {
         return answer;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(question);
+        dest.writeString(option1);
+        dest.writeString(option2);
+        dest.writeString(option3);
+        dest.writeString(option4);
+        dest.writeString(answer);
+    }
 }
