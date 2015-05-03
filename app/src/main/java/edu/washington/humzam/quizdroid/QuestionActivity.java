@@ -60,16 +60,6 @@ public class QuestionActivity extends Activity{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                setContentView(R.layout.answer_layout);
-//                yourAnswer.setText(answer.getText());
-//                correctAnswer.setText(questions.get(pos).getAnswer());
-//                if (pos >= questions.size()) {
-//                    next.setVisibility(View.GONE);
-//                    finish.setVisibility(View.VISIBLE);
-//                } else {
-//                    next.setVisibility(View.VISIBLE);
-//                    finish.setVisibility(View.GONE);
-//                }
                 Intent showAnswer = new Intent(QuestionActivity.this, AnswerActivity.class);
                 RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
                 int radioGroupID = radioGroup.getCheckedRadioButtonId();
@@ -98,34 +88,6 @@ public class QuestionActivity extends Activity{
                 }
             }
         });
-
-//        next = (Button) findViewById(R.id.next_btn);
-//        next.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                setContentView(R.layout.question_layout);
-//                pos++;
-//                nextQuestion(pos);
-//                if (pos >= questions.size()) {
-//                    next.setVisibility(View.GONE);
-//                    finish.setVisibility(View.VISIBLE);
-//                } else {
-//                    next.setVisibility(View.VISIBLE);
-//                    finish.setVisibility(View.GONE);
-//                }
-//            }
-//        });
-
-//        finish = (Button) findViewById(R.id.finish_btn);
-//        finish.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                pos = 0;
-//                Intent startOver = new Intent(QuestionActivity.this, MainActivity.class);
-//                startActivity(startOver);
-//                finish();
-//            }
-//        });
     }
 
     public void nextQuestion(int pos) {
@@ -152,7 +114,7 @@ public class QuestionActivity extends Activity{
 
     public ArrayList<Question> getPhysicsQuestions() {
         ArrayList<Question> questions = new ArrayList<Question>();
-        questions.add(new Question("What is the acceleration of an object near the surface of the earth?", "9.8 m/s", "3.14 m/s^2", "4.9 m/s^2", "9.8 ft/sec^2", "9.8 m/s^2"));
+        questions.add(new Question("What is the acceleration of an object near the surface of the earth?", "9.8 m/s", "3.14 m/s^2", "4.9 m/s^2", "9.8 m/s^2", "9.8 m/s^2"));
         questions.add(new Question("An object at rest will stay at rest until acted upon by an external force. This is known as Newton's:", "Second Law", "First Law", "Theory of Inertia", "Third Law", "First Law"));
         questions.add(new Question("What is the equation for momentum?", "p = m*v", "p = d*v", "p = m * g * v", "p = I * r", "p = m*v"));
         return questions;
