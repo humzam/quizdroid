@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -51,16 +52,20 @@ public class TopicActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        addDynamicFragment();
         Intent launchingIntent = getIntent();
         Bundle b = launchingIntent.getExtras();
         topic = b.getString("topic");
 
-//        setContentView(R.layout.topic_layout);
+        setContentView(R.layout.topic_layout);
 
         // show the appropriate topic overview page depending on what was clicked in MainActivity
         if (topic.equals("Math")) {
 //           setContentView(R.layout.activity_topic_math);
+//            FragmentManager fm = getFragmentManager();
+//            FragmentTransaction ft = fm.beginTransaction();
+//            ft.replace(R.id.container, new MathFragment());
+//            ft.commit();
            questions = getMathQuestions();
         } else if (topic.equals("Physics")) {
 //           setContentView(R.layout.activity_topic_physics);
@@ -71,24 +76,23 @@ public class TopicActivity extends Activity {
         }
 
 
-        beginMath = (Button) findViewById(R.id.math_begin);
-        if (beginMath != null) {
-            beginMath.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                i("TopicActivity", "begin math button clicked");
-//                    Intent startMath = new Intent(TopicActivity.this, QuestionActivity.class);
-//                    startMath.putExtra("topic", topic);
-//                    startActivity(startMath);
-//                    finish();
-
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
-                    ft.replace(R.id.container, new MathFragment());
-                    ft.commit();
-                }
-            });
-        }
+//        beginMath = (Button) findViewById(R.id.math_begin);
+//        if (beginMath != null) {
+//            beginMath.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    i("TopicActivity", "begin math button clicked");
+////                    Intent startMath = new Intent(TopicActivity.this, QuestionActivity.class);
+////                    startMath.putExtra("topic", topic);
+////                    startActivity(startMath);
+////                    finish();
+//                    FragmentManager fm = getFragmentManager();
+//                    FragmentTransaction ft = fm.beginTransaction();
+//                    ft.replace(R.id.container, new QuestionFragment());
+//                    ft.commit();
+//                }
+//            });
+//        }
 
 
         beginPhysics = (Button) findViewById(R.id.physics_begin);
@@ -124,7 +128,16 @@ public class TopicActivity extends Activity {
         correctAnswer = (TextView) findViewById(R.id.correct_answer_text);
         next = (Button) findViewById(R.id.next_btn);
         finish = (Button) findViewById(R.id.finish_btn);
-       }
+    }
+
+
+    private void addDynamicFragment() {
+        // TODO Auto-generated method stub
+        // creating instance of the HelloWorldFragment.
+        MathFragment mathFragment = new MathFragment();
+        // adding fragment to relative layout by using layout id
+        getFragmentManager().beginTransaction().add(R.id.container, mathFragment).commit();
+    }
 
 
     @Override
