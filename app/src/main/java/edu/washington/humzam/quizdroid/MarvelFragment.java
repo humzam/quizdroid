@@ -9,33 +9,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import java.io.Serializable;
-
 import static android.util.Log.i;
 
 /**
- * Created by humzamangrio on 5/3/15.
+ * Created by humzamangrio on 5/5/15.
  */
-public class MathFragment extends Fragment implements Serializable{
+public class MarvelFragment extends Fragment {
 
-    Button beginMath;
+    Button beginMarvel;
     String topic;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.activity_topic_math,
+        View view = inflater.inflate(R.layout.activity_topic_marvel,
                 container, false);
 
-        if (getArguments() != null) {
-            topic = getArguments().getString("topic");
-        }
+        topic = getArguments().getString("topic");
 
-        beginMath = (Button) view.findViewById(R.id.math_begin);
-        beginMath.setOnClickListener(new View.OnClickListener() {
+        beginMarvel = (Button) view.findViewById(R.id.marvel_begin);
+        beginMarvel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                i("TopicActivity", "begin math button clicked");
+                i("TopicActivity", "begin marvel button clicked");
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 QuestionFragment questionFragment = new QuestionFragment();
@@ -47,11 +43,7 @@ public class MathFragment extends Fragment implements Serializable{
             }
         });
 
-
-
         return view;
 
     }
-
-
 }

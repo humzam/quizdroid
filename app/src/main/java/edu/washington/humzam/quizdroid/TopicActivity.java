@@ -27,32 +27,21 @@ import static android.util.Log.i;
 
 public class TopicActivity extends Activity {
 
-    Button beginMath;
-    Button beginPhysics;
-    Button beginMarvel;
-
     Button next;
     Button finish;
 
-    RadioButton option1;
-    RadioButton option2;
-    RadioButton option3;
-    RadioButton option4;
 
     Button submit;
     TextView yourAnswer;
     TextView correctAnswer;
-    ArrayList<Question> questions;
 
     String topic;
 
-    int pos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addDynamicFragment();
         Intent launchingIntent = getIntent();
         Bundle b = launchingIntent.getExtras();
         topic = b.getString("topic");
@@ -61,66 +50,11 @@ public class TopicActivity extends Activity {
 
         // show the appropriate topic overview page depending on what was clicked in MainActivity
         if (topic.equals("Math")) {
-//           setContentView(R.layout.activity_topic_math);
-//            FragmentManager fm = getFragmentManager();
-//            FragmentTransaction ft = fm.beginTransaction();
-//            ft.replace(R.id.container, new MathFragment());
-//            ft.commit();
-           questions = getMathQuestions();
+            addMathFragment();
         } else if (topic.equals("Physics")) {
-//           setContentView(R.layout.activity_topic_physics);
-           questions = getPhysicsQuestions();
+            addPhysicsFragment();
         } else {
-//           setContentView(R.layout.activity_topic_marvel);
-           questions = getMarvelQuestions();
-        }
-
-
-//        beginMath = (Button) findViewById(R.id.math_begin);
-//        if (beginMath != null) {
-//            beginMath.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    i("TopicActivity", "begin math button clicked");
-////                    Intent startMath = new Intent(TopicActivity.this, QuestionActivity.class);
-////                    startMath.putExtra("topic", topic);
-////                    startActivity(startMath);
-////                    finish();
-//                    FragmentManager fm = getFragmentManager();
-//                    FragmentTransaction ft = fm.beginTransaction();
-//                    ft.replace(R.id.container, new QuestionFragment());
-//                    ft.commit();
-//                }
-//            });
-//        }
-
-
-        beginPhysics = (Button) findViewById(R.id.physics_begin);
-        if (beginPhysics != null) {
-            beginPhysics.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    i("TopicActivity", "begin physics button clicked");
-                    Intent startPhysics = new Intent(TopicActivity.this, QuestionActivity.class);
-                    startPhysics.putExtra("topic", topic);
-                    startActivity(startPhysics);
-                    finish();
-                }
-            });
-        }
-
-        beginMarvel = (Button) findViewById(R.id.marvel_begin);
-        if (beginMarvel != null) {
-            beginMarvel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    i("TopicActivity", "begin marvel button clicked");
-                    Intent startMarvel = new Intent(TopicActivity.this, QuestionActivity.class);
-                    startMarvel.putExtra("topic", topic);
-                    startActivity(startMarvel);
-                    finish();
-                }
-            });
+            addMarvelFragment();
         }
 
         submit = (Button) findViewById(R.id.submit_btn);
@@ -130,13 +64,53 @@ public class TopicActivity extends Activity {
         finish = (Button) findViewById(R.id.finish_btn);
     }
 
+    public void loadAnswerFrag(Bundle info) {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        AnswerFragment answerFragment = new AnswerFragment();
+        answerFragment.setArguments(info);
+        ft.replace(R.id.container, answerFragment);
+        ft.commit();
+    }
 
-    private void addDynamicFragment() {
-        // TODO Auto-generated method stub
+    public void loadQuestionFragment(Bundle info) {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        QuestionFragment questionFragment = new QuestionFragment();
+        questionFragment.setArguments(info);
+        ft.replace(R.id.container, questionFragment);
+        ft.commit();
+    }
+
+
+    private void addMathFragment() {
         // creating instance of the HelloWorldFragment.
         MathFragment mathFragment = new MathFragment();
+        Bundle info = new Bundle();
+        info.putString("topic", topic);
+        mathFragment.setArguments(info);
         // adding fragment to relative layout by using layout id
         getFragmentManager().beginTransaction().add(R.id.container, mathFragment).commit();
+    }
+
+    private void addPhysicsFragment() {
+        // creating instance of the HelloWorldFragment.
+        PhysicsFragment physicsFragment = new PhysicsFragment();
+        Bundle info = new Bundle();
+        info.putString("topic", topic);
+        physicsFragment.setArguments(info);
+        // adding fragment to relative layout by using layout id
+        getFragmentManager().beginTransaction().add(R.id.container, physicsFragment).commit();
+    }
+
+    private void addMarvelFragment() {
+        // creating instance of the HelloWorldFragment.
+        MarvelFragment marvelFragment = new MarvelFragment();
+        Bundle info = new Bundle();
+        info.putString("topic", topic);
+        marvelFragment.setArguments(info);
+        // adding fragment to relative layout by using layout id
+        getFragmentManager().beginTransaction().add(R.id.container, marvelFragment).commit();
     }
 
 
@@ -162,27 +136,4 @@ public class TopicActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public ArrayList<Question> getMathQuestions() {
-        ArrayList<Question> questions = new ArrayList<Question>();
-        questions.add(new Question("What is 1 + 1?", "3", "2", "0", "1", "2"));
-        questions.add(new Question("What is the 2 raised to the sixth power?", "64", "4", "16", "32", "2"));
-        questions.add(new Question("What is the derivative of 5x^2?", "3x", "10x^2", "5x^2", "10x", "10x"));
-        return questions;
-    }
-
-    public ArrayList<Question> getPhysicsQuestions() {
-        ArrayList<Question> questions = new ArrayList<Question>();
-        questions.add(new Question("What is the acceleration of an object near the surface of the earth?", "9.8 m/s", "3.14 m/s^2", "4.9 m/s^2", "9.8 m/s^2", "9.8 m/s^2"));
-        questions.add(new Question("An object at rest will stay at rest until acted upon by an external force. This is known as Newton's:", "Second Law", "First Law", "Theory of Inertia", "Third Law", "First Law"));
-        questions.add(new Question("What is the equation for momentum?", "p = m*v", "p = d*v", "p = m * g * v", "p = I * r", "p = m*v"));
-        return questions;
-    }
-
-    public ArrayList<Question> getMarvelQuestions() {
-        ArrayList<Question> questions = new ArrayList<Question>();
-        questions.add(new Question("Which of the following is NOT a Marvel super hero?", "Spiderman", "Iron Man", "Batman", "Wolverine", "Batman"));
-        questions.add(new Question("What is the Hulk's real name?", "Dr. Banter", "Dr. Brown", "Dr. Bruce Bowen", "Dr. Bruce Banner", "Dr. Bruce Banner"));
-        questions.add(new Question("Which hero is played by actor Chris Evans?", "Captain America", "Flash", "Wolverine", "Spiderman", "Captain America"));
-        return questions;
-    }
 }

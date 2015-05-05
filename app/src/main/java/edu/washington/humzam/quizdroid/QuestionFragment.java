@@ -1,9 +1,11 @@
 package edu.washington.humzam.quizdroid;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +13,6 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -28,28 +29,25 @@ public class QuestionFragment extends Fragment {
     int pos;
     int total_correct;
     int total_questions;
+    String topic;
+    private Activity hostActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.question_layout,
                 container, false);
-
-//        if (topic.equals("Math")) {
-//            questions = getMathQuestions();
-//        } else if (topic.equals("Physics")) {
-//            questions = getPhysicsQuestions();
-//        } else {
-//            questions = getMarvelQuestions();
-//        }
 
         if (getArguments() != null) {
             pos = getArguments().getInt("pos");
             total_correct = getArguments().getInt("totalCorrect");
             total_questions = getArguments().getInt("totalQuestions");
+            topic = getArguments().getString("topic");
         } else {
             pos = 0;
             total_questions = 0;
             total_correct = 0;
+            topic = "";
         }
 
         Button submit = (Button) view.findViewById(R.id.submit_btn);
@@ -70,8 +68,6 @@ public class QuestionFragment extends Fragment {
                     if (pos + 1 >= questions.size()) {
                         hasMoreQuestions = false;
                     }
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
                     Bundle info = new Bundle();
                     info.putBoolean("hasMoreQuestions", hasMoreQuestions);
                     info.putInt("totalCorrect", total_correct);
@@ -80,22 +76,39 @@ public class QuestionFragment extends Fragment {
                     info.putString("correctAnswer", questions.get(pos).getAnswer());
                     info.putInt("pos", pos);
                     info.putInt("size", questions.size());
-                    AnswerFragment answerFragment = new AnswerFragment();
-                    answerFragment.setArguments(info);
-                    ft.replace(R.id.container, answerFragment);
-                    ft.commit();
+                    info.putString("topic", topic);
+                    if (hostActivity instanceof TopicActivity) {
+                        ((TopicActivity) hostActivity).loadAnswerFrag(info);
+                    }
                 }
             }
         });
 
+        if (topic.equals("Math")) {
+            questions = getMathQuestions();
+        } else if (topic.equals("Physics")) {
+            questions = getPhysicsQuestions();
+        } else {
+            questions = getMarvelQuestions();
+        }
 
-        questions = getMathQuestions();
+        Log.i("QuestionFrag", "View id =" + getResources().getResourceEntryName(view.getId()));
+
+
+        if (questions == null ) {
+            Log.i("QuestFrag", "questions array is null");
+        }
+        Log.i("QuestFrag", "questions length = " + questions.size());
+        Log.i("QuestFrag", "Question is at pos : " + pos + " quest " + questions.get(pos).getQuestion());
+
+
         nextQuestion(pos);
         return view;
 
     }
 
     public void nextQuestion(int pos) {
+        Log.i("QuestionFrag", "view is " + view);
         TextView question = (TextView) view.findViewById(R.id.question_title_text_view);
         question.setText("" + questions.get(pos).getQuestion());
         RadioButton option1 = (RadioButton) view.findViewById(R.id.radioButton1);
@@ -107,6 +120,12 @@ public class QuestionFragment extends Fragment {
         RadioButton option4 = (RadioButton) view.findViewById(R.id.radioButton4);
         option4.setText("" + questions.get(pos).getOption4());
 
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.hostActivity = activity;
     }
 
     public ArrayList<Question> getMathQuestions() {
