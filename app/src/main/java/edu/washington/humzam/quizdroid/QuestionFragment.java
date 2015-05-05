@@ -1,6 +1,8 @@
 package edu.washington.humzam.quizdroid;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +11,11 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import static android.util.Log.i;
 
 /**
  * Created by humzamangrio on 5/4/15.
@@ -37,10 +42,21 @@ public class QuestionFragment extends Fragment {
 //            questions = getMarvelQuestions();
 //        }
 
+        if (getArguments() != null) {
+            pos = getArguments().getInt("pos");
+            total_correct = getArguments().getInt("totalCorrect");
+            total_questions = getArguments().getInt("totalQuestions");
+        } else {
+            pos = 0;
+            total_questions = 0;
+            total_correct = 0;
+        }
+
         Button submit = (Button) view.findViewById(R.id.submit_btn);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                i("QuestionFragment", "submit button clicked");
                 RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.radioGroup);
                 int radioGroupID = radioGroup.getCheckedRadioButtonId();
                 if (radioGroupID != -1) {
@@ -54,6 +70,20 @@ public class QuestionFragment extends Fragment {
                     if (pos + 1 >= questions.size()) {
                         hasMoreQuestions = false;
                     }
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    Bundle info = new Bundle();
+                    info.putBoolean("hasMoreQuestions", hasMoreQuestions);
+                    info.putInt("totalCorrect", total_correct);
+                    info.putInt("totalQuestions", total_questions);
+                    info.putString("selection", selection);
+                    info.putString("correctAnswer", questions.get(pos).getAnswer());
+                    info.putInt("pos", pos);
+                    info.putInt("size", questions.size());
+                    AnswerFragment answerFragment = new AnswerFragment();
+                    answerFragment.setArguments(info);
+                    ft.replace(R.id.container, answerFragment);
+                    ft.commit();
                 }
             }
         });
@@ -61,7 +91,6 @@ public class QuestionFragment extends Fragment {
 
         questions = getMathQuestions();
         nextQuestion(pos);
-        pos++;
         return view;
 
     }
@@ -83,7 +112,7 @@ public class QuestionFragment extends Fragment {
     public ArrayList<Question> getMathQuestions() {
         ArrayList<Question> questions = new ArrayList<Question>();
         questions.add(new Question("What is 1 + 1?", "3", "2", "0", "1", "2"));
-        questions.add(new Question("What is the 2 raised to the sixth power?", "64", "4", "16", "32", "2"));
+        questions.add(new Question("What is the 2 raised to the sixth power?", "64", "4", "16", "32", "64"));
         questions.add(new Question("What is the derivative of 5x^2?", "3x", "10x^2", "5x^2", "10x", "10x"));
         return questions;
     }
