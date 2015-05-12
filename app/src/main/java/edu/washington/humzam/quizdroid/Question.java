@@ -15,9 +15,9 @@ public class Question implements Parcelable {
     private String option2;
     private String option3;
     private String option4;
-    private String answer;
+    private int answer;
 
-    public Question(String question, String option1, String option2, String option3, String option4, String answer ) {
+    public Question(String question, String option1, String option2, String option3, String option4, int answer ) {
         this.question = question;
         this.option1 = option1;
         this.option2 = option2;
@@ -46,7 +46,7 @@ public class Question implements Parcelable {
         return option4;
     }
 
-    public String getAnswer() {
+    public int getAnswer() {
         return answer;
     }
 
@@ -62,6 +62,6 @@ public class Question implements Parcelable {
         dest.writeString(option2);
         dest.writeString(option3);
         dest.writeString(option4);
-        dest.writeString(answer);
+        dest.writeInt(answer);
     }
 }
