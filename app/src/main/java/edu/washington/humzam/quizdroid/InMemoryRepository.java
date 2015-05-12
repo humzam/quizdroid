@@ -1,5 +1,6 @@
 package edu.washington.humzam.quizdroid;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  */
 public class InMemoryRepository implements TopicRepository {
 
-    private List<Question> topics;
+    private List<Question> topics = new ArrayList<Question>();
 
     public InMemoryRepository() {
 

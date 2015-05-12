@@ -17,6 +17,10 @@ public class Question implements Parcelable {
     private String option4;
     private int answer;
 
+    public Question() {
+
+    }
+
     public Question(String question, String option1, String option2, String option3, String option4, int answer ) {
         this.question = question;
         this.option1 = option1;
@@ -26,6 +30,18 @@ public class Question implements Parcelable {
         this.answer = answer;
     }
 
+    public void setQuestion(String question) { this.question = question; }
+
+    public void setOption1(String text) { this.option1 = text; }
+
+    public void setOption2(String text) { this.option2 = text; }
+
+    public void setOption3(String text) { this.option3 = text; }
+
+    public void setOption4(String text) { this.option4 = text; }
+
+    public void setAnswer(int correct) { this.answer = correct;
+    }
     public String getQuestion() {
         return question;
     }
