@@ -8,4 +8,6 @@ import java.util.List;
 public interface TopicRepository {
 
     public List<Topic> getTopics();
+
+    public void setTopics(List<Topic> questions);
 }

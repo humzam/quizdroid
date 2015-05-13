@@ -2,7 +2,6 @@ package edu.washington.humzam.quizdroid;
 
 import android.app.Application;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,9 +16,9 @@ import java.util.List;
 
 public class QuizApp extends Application {
     private static QuizApp instance = null;
-    public static TopicRepository quiz = new InMemoryRepository();
+    private static TopicRepository quiz;
     public static final String TAG = "QuizApp";
-    public List<Topic> questions;
+    private List<Topic> questions;
 
     public QuizApp() {
         Log.i(TAG, "constructor fired");
@@ -29,6 +28,11 @@ public class QuizApp extends Application {
             throw new RuntimeException("Cannot create more than one " + TAG);
         }
         questions = new ArrayList<Topic>();
+        quiz = new InMemoryRepository();
+    }
+
+    public List<Topic> getTopics() {
+        return questions;
     }
 
     @Override
@@ -76,6 +80,7 @@ public class QuizApp extends Application {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        quiz.setTopics(questions);
     }
 
     // reads InputStream of JSON file and returns the file in JSON String format

@@ -21,6 +21,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.util.Log.i;
 
@@ -47,6 +48,9 @@ public class TopicActivity extends Activity {
         topic = b.getString("topic");
 
         setContentView(R.layout.topic_layout);
+
+        QuizApp quizApp = (QuizApp) getApplication();
+        List<Topic> topics = quizApp.getTopics();
 
         // show the appropriate topic overview page depending on what was clicked in MainActivity
         if (topic.equals("Math")) {

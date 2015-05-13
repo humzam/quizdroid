@@ -8,19 +8,21 @@ import java.util.List;
  */
 public class InMemoryRepository implements TopicRepository {
 
-    private List<Question> topics = new ArrayList<Question>();
+    private List<Topic> topics = new ArrayList<Topic>();
 
     public InMemoryRepository() {
 
     }
 
-    public InMemoryRepository(String[] titles, String[] short_desc, String[] long_desc) {
-        for (int i = 0; i < titles.length; i++) {
-            Topic topic = new Topic();
-        }
+    public InMemoryRepository(List<Topic> topics) {
+        this.topics = topics;
     }
 
-    public List<Question> getTopics() {
+    public List<Topic> getTopics() {
         return topics;
+    }
+
+    public void setTopics(List<Topic> topics) {
+        this.topics = topics;
     }
 }

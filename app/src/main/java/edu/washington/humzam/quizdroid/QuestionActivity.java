@@ -10,6 +10,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by humzamangrio on 4/28/15.
@@ -64,15 +65,16 @@ public class QuestionActivity extends Activity{
                 RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
                 int radioGroupID = radioGroup.getCheckedRadioButtonId();
                 if (radioGroupID != -1) {
+                    String[] options = getOptionsArray();
                     radioButton = (RadioButton) findViewById(radioGroupID);
                     selection = radioButton.getText().toString();
                     showAnswer.putExtra("pos", pos);
                     showAnswer.putExtra("size", questions.size());
                     showAnswer.putExtra("answer", selection);
-                    showAnswer.putExtra("correct", questions.get(pos).getAnswer());
+                    showAnswer.putExtra("correct", options[questions.get(pos).getAnswer()]);
                     showAnswer.putExtra("questions", questions);
                     showAnswer.putExtra("topic", topic);
-                    if (selection.equals(questions.get(pos).getAnswer())) {
+                    if (selection.equals(options[questions.get(pos).getAnswer()])) {
                         total_correct++;
                     }
                     total_questions++;
@@ -88,6 +90,13 @@ public class QuestionActivity extends Activity{
                 }
             }
         });
+    }
+
+    // method that returns an string array of all the options for this questions
+    public String[] getOptionsArray() {
+        String[] options = {questions.get(pos).getOption1(), questions.get(pos).getOption2(),
+                questions.get(pos).getOption3(), questions.get(pos).getOption1()};
+        return options;
     }
 
     public void nextQuestion(int pos) {
@@ -106,25 +115,25 @@ public class QuestionActivity extends Activity{
 
     public ArrayList<Question> getMathQuestions() {
         ArrayList<Question> questions = new ArrayList<Question>();
-        questions.add(new Question("What is 1 + 1?", "3", "2", "0", "1", "2"));
-        questions.add(new Question("What is the 2 raised to the sixth power?", "64", "4", "16", "32", "64"));
-        questions.add(new Question("What is the derivative of 5x^2?", "3x", "10x^2", "5x^2", "10x", "10x"));
+        questions.add(new Question("What is 1 + 1?", "3", "2", "0", "1", 1));
+        questions.add(new Question("What is the 2 raised to the sixth power?", "64", "4", "16", "32", 0));
+        questions.add(new Question("What is the derivative of 5x^2?", "3x", "10x^2", "5x^2", "10x", 3));
         return questions;
     }
 
     public ArrayList<Question> getPhysicsQuestions() {
         ArrayList<Question> questions = new ArrayList<Question>();
-        questions.add(new Question("What is the acceleration of an object near the surface of the earth?", "9.8 m/s", "3.14 m/s^2", "4.9 m/s^2", "9.8 m/s^2", "9.8 m/s^2"));
-        questions.add(new Question("An object at rest will stay at rest until acted upon by an external force. This is known as Newton's:", "Second Law", "First Law", "Theory of Inertia", "Third Law", "First Law"));
-        questions.add(new Question("What is the equation for momentum?", "p = m*v", "p = d*v", "p = m * g * v", "p = I * r", "p = m*v"));
+        questions.add(new Question("What is the acceleration of an object near the surface of the earth?", "9.8 m/s", "3.14 m/s^2", "4.9 m/s^2", "9.8 m/s^2", 3));
+        questions.add(new Question("An object at rest will stay at rest until acted upon by an external force. This is known as Newton's:", "Second Law", "First Law", "Theory of Inertia", "Third Law", 1));
+        questions.add(new Question("What is the equation for momentum?", "p = m*v", "p = d*v", "p = m * g * v", "p = I * r", 0));
         return questions;
     }
 
     public ArrayList<Question> getMarvelQuestions() {
         ArrayList<Question> questions = new ArrayList<Question>();
-        questions.add(new Question("Which of the following is NOT a Marvel super hero?", "Spiderman", "Iron Man", "Batman", "Wolverine", "Batman"));
-        questions.add(new Question("What is the Hulk's real name?", "Dr. Banter", "Dr. Brown", "Dr. Bruce Bowen", "Dr. Bruce Banner", "Dr. Bruce Banner"));
-        questions.add(new Question("Which hero is played by actor Chris Evans?", "Captain America", "Flash", "Wolverine", "Spiderman", "Captain America"));
+        questions.add(new Question("Which of the following is NOT a Marvel super hero?", "Spiderman", "Iron Man", "Batman", "Wolverine", 2));
+        questions.add(new Question("What is the Hulk's real name?", "Dr. Banter", "Dr. Brown", "Dr. Bruce Bowen", "Dr. Bruce Banner", 3));
+        questions.add(new Question("Which hero is played by actor Chris Evans?", "Captain America", "Flash", "Wolverine", "Spiderman", 0));
         return questions;
     }
 }
