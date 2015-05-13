@@ -73,6 +73,12 @@ public class Question implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        return "question is + " + getQuestion();
+    }
+
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(question);
         dest.writeString(option1);

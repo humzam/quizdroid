@@ -23,6 +23,11 @@ public class Topic {
         this.questions = questions;
     }
 
+    @Override
+    public String toString() {
+        return title + " " + short_desc;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -37,6 +42,18 @@ public class Topic {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getShort_desc() {
+        return short_desc;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
     }
 
 }

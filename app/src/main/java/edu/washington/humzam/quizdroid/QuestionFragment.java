@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.util.Log.i;
 
@@ -24,13 +25,14 @@ import static android.util.Log.i;
 
 public class QuestionFragment extends Fragment {
 
-    ArrayList<Question> questions;
+    List<Question> questions;
     View view;
     int pos;
     int total_correct;
     int total_questions;
-    String topic;
+    int topicNum;
     private Activity hostActivity;
+    private static final String TAG = "QuestionFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,16 +41,23 @@ public class QuestionFragment extends Fragment {
                 container, false);
 
         if (getArguments() != null) {
-            pos = getArguments().getInt("pos");
+            pos = getArguments().getInt("pos");  // specifies which question we want
             total_correct = getArguments().getInt("totalCorrect");
             total_questions = getArguments().getInt("totalQuestions");
-            topic = getArguments().getString("topic");
+            topicNum = getArguments().getInt("topic");  // specifies which topic we are working with
         } else {
             pos = 0;
             total_questions = 0;
             total_correct = 0;
-            topic = "";
+            topicNum = 0;
         }
+
+        QuizApp quizApp = (QuizApp) getActivity().getApplication();
+        List<Topic> topicsList = quizApp.getTopics();
+        questions = topicsList.get(topicNum).getQuestions();
+        Log.i(TAG, "topic number = " + topicNum);
+
+        nextQuestion(pos);
 
         Button submit = (Button) view.findViewById(R.id.submit_btn);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +70,7 @@ public class QuestionFragment extends Fragment {
                     String[] options = getOptionsArray();
                     Button radioButton = (RadioButton) view.findViewById(radioGroupID);
                     String selection = radioButton.getText().toString();
-                    if (selection.equals(options[questions.get(pos).getAnswer()])) {
+                    if (selection.equals(options[questions.get(pos).getAnswer() - 1])) {
                         total_correct++;
                     }
                     total_questions++;
@@ -74,11 +83,11 @@ public class QuestionFragment extends Fragment {
                     info.putInt("totalCorrect", total_correct);
                     info.putInt("totalQuestions", total_questions);
                     info.putString("selection", selection);
-                    info.putString("correctAnswer", options[questions.get(pos).getAnswer()]);
-                    Log.i("QuestionFragment", "correct answer = " + options[questions.get(pos).getAnswer()]);
+                    info.putString("correctAnswer", options[questions.get(pos).getAnswer() - 1]);
+                    Log.i("QuestionFragment", "correct answer = " + options[questions.get(pos).getAnswer() - 1]);
                     info.putInt("pos", pos);
                     info.putInt("size", questions.size());
-                    info.putString("topic", topic);
+                    info.putInt("topic", topicNum);
                     if (hostActivity instanceof TopicActivity) {
                         ((TopicActivity) hostActivity).loadAnswerFrag(info);
                     }
@@ -86,28 +95,40 @@ public class QuestionFragment extends Fragment {
             }
         });
 
-        if (topic.equals("Math")) {
-            questions = getMathQuestions();
-        } else if (topic.equals("Physics")) {
-            questions = getPhysicsQuestions();
-        } else {
-            questions = getMarvelQuestions();
-        }
+//        if (topic.equals("Math")) {
+//            questions = getMathQuestions();
+//        } else if (topic.equals("Physics")) {
+//            questions = getPhysicsQuestions();
+//        } else {
+//            questions = getMarvelQuestions();
+//        }
 
-        Log.i("QuestionFrag", "View id =" + getResources().getResourceEntryName(view.getId()));
-
-
-        if (questions == null ) {
-            Log.i("QuestFrag", "questions array is null");
-        }
-        Log.i("QuestFrag", "questions length = " + questions.size());
-        Log.i("QuestFrag", "Question is at pos : " + pos + " quest " + questions.get(pos).getQuestion());
+//        Log.i("QuestionFrag", "View id =" + getResources().getResourceEntryName(view.getId()));
 
 
-        nextQuestion(pos);
+//        if (questions == null ) {
+//            Log.i("QuestFrag", "questions array is null");
+//        }
+//        Log.i("QuestFrag", "questions length = " + questions.size());
+//        Log.i("QuestFrag", "Question is at pos : " + pos + " quest " + questions.get(pos).getQuestion());
+
+
         return view;
 
     }
+
+//    public String[] getTopicsArray() {
+//        QuizApp quizApp = (QuizApp) getActivity().getApplication();
+//        topicsList = quizApp.getTopics();
+//        String []topics = new String[topicsList.size()];
+//        int pos = 0;
+//        for (Topic t : topicsList) {
+//            topics[pos] = t.getTitle();
+//            pos++;
+//        }
+//        return topics;
+//    }
+
 
     // method that returns an string array of all the options for this questions
     public String[] getOptionsArray() {
@@ -117,7 +138,12 @@ public class QuestionFragment extends Fragment {
     }
 
     public void nextQuestion(int pos) {
-        Log.i("QuestionFrag", "view is " + view);
+        Log.i(TAG, "pos is " + pos);
+        Log.i(TAG, "questions size " + questions.size());
+        Log.i(TAG, "questions is " + questions.toString());
+        Log.i(TAG, "question is " + questions.get(pos).getQuestion());
+        Log.i(TAG, "answer is " + getOptionsArray());
+        Log.i(TAG, "correct answer is " + questions.get(pos).getAnswer());
         TextView question = (TextView) view.findViewById(R.id.question_title_text_view);
         question.setText("" + questions.get(pos).getQuestion());
         RadioButton option1 = (RadioButton) view.findViewById(R.id.radioButton1);
@@ -128,7 +154,6 @@ public class QuestionFragment extends Fragment {
         option3.setText("" + questions.get(pos).getOption3());
         RadioButton option4 = (RadioButton) view.findViewById(R.id.radioButton4);
         option4.setText("" + questions.get(pos).getOption4());
-
     }
 
     @Override

@@ -1,6 +1,7 @@
 package edu.washington.humzam.quizdroid;
 
 import android.app.Application;
+import android.nfc.Tag;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,47 +41,65 @@ public class QuizApp extends Application {
         super.onCreate();
         Log.i(TAG, "onCreate fired");
 
-        String json = null;
+//        try {
+//            InputStream inputStream = getAssets().open("questions.json");
+//            String json = readJSONFile(inputStream);
+//            Log.i(TAG, "json length " + json.length());
+//        } catch (IOException e) {
+//            Log.i(TAG, "file not found");
+//            e.printStackTrace();
+//        }
 
         // Fetch questions.json in assets/ folder
         try {
             InputStream inputStream = getAssets().open("questions.json");
-            json = readJSONFile(inputStream);
+            String json = readJSONFile(inputStream);
 
             JSONArray jsonData = new JSONArray(json);
+            Log.i(TAG, "json length is " + jsonData.length());
             for (int topicNumber = 0; topicNumber < jsonData.length(); topicNumber++) {
                 Topic newTopic = new Topic();
                 JSONObject topic = new JSONObject(jsonData.get(topicNumber).toString());
                 String title = topic.getString("title");
+                Log.i(TAG, "title is " + title);
                 newTopic.setTitle(title);
                 String desc = topic.getString("desc");
+                Log.i(TAG, "desc is " + desc);
                 newTopic.setShort_desc(desc);
                 newTopic.setLong_desc(desc);
                 JSONArray questionsData = new JSONArray(topic.get("questions").toString());
                 List<Question> questions = new ArrayList<Question>();
                 for (int questionNumber = 0; questionNumber < questionsData.length(); questionNumber++) {
                     Question newQuestion = new Question();
-                    JSONObject question = new JSONObject(questionsData.get(0).toString());
+                    JSONObject question = new JSONObject(questionsData.get(questionNumber).toString());
                     String text = question.getString("text");
+                    Log.i(TAG, "question is " + text);
                     newQuestion.setQuestion(text);
                     int correct_answer = question.getInt("answer");
                     newQuestion.setAnswer(correct_answer);
                     JSONArray answers = question.getJSONArray("answers");
                     newQuestion.setOption1(answers.get(0).toString());
-                    newQuestion.setOption1(answers.get(1).toString());
-                    newQuestion.setOption1(answers.get(2).toString());
-                    newQuestion.setOption1(answers.get(3).toString());
+                    newQuestion.setOption2(answers.get(1).toString());
+                    newQuestion.setOption3(answers.get(2).toString());
+                    newQuestion.setOption4(answers.get(3).toString());
+                    Log.i(TAG, "first answer is " + answers.get(0));
+                    Log.i(TAG, "second answer is " + answers.get(1));
+                    Log.i(TAG, "third answer is " + answers.get(2));
+                    Log.i(TAG, "fourth answer is " + answers.get(3));
                     questions.add(newQuestion);
                 }
                 newTopic.setQuestions(questions);
                 this.questions.add(newTopic);
             }
         } catch (IOException e) {
+            Log.i(TAG, "json thing failed");
             e.printStackTrace();
         } catch (JSONException e) {
+            Log.i(TAG, "json thing failed");
             e.printStackTrace();
         }
         quiz.setTopics(questions);
+        Log.i(TAG, "questions " + questions);
     }
 
     // reads InputStream of JSON file and returns the file in JSON String format

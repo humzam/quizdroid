@@ -21,7 +21,7 @@ public class AnswerFragment extends Fragment {
     int total_questions;
     String selection;
     int pos;
-    String topic;
+    int topic;
 
     TextView yourAnswer;
     TextView correctAnswer;
@@ -40,7 +40,7 @@ public class AnswerFragment extends Fragment {
             total_questions = getArguments().getInt("totalQuestions");
             selection = getArguments().getString("selection");
             pos = getArguments().getInt("pos");
-            topic = getArguments().getString("topic");
+            topic = getArguments().getInt("topic");
             hasMoreQuestions = getArguments().getBoolean("hasMoreQuestions");
         }
 
@@ -62,7 +62,7 @@ public class AnswerFragment extends Fragment {
                 info.putInt("pos", pos + 1);
                 info.putInt("totalCorrect", total_correct);
                 info.putInt("totalQuestions", total_questions);
-                info.putString("topic", topic);
+                info.putInt("topic", topic);
                 if (hostActivity instanceof TopicActivity) {
                     ((TopicActivity) hostActivity).loadQuestionFragment(info);
                 }

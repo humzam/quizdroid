@@ -20,8 +20,10 @@
         android:id="@+id/your_answer_text"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="50dp"
-        android:textSize="30dp"/>
+        android:textSize="20dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -31,7 +33,7 @@
         android:id="@+id/textView4"
         android:layout_below="@+id/your_answer_text"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="79dp" />
+        android:layout_marginTop="65dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,9 +41,11 @@
         android:text="Correct Answer"
         android:id="@+id/correct_answer_text"
         android:layout_marginTop="63dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_below="@+id/textView4"
         android:layout_centerHorizontal="true"
-        android:textSize="30dp"/>
+        android:textSize="20dp"/>
 
     <TextView
         android:layout_width="wrap_content"

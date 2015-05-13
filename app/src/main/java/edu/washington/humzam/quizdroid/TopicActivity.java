@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,8 +37,9 @@ public class TopicActivity extends Activity {
     TextView yourAnswer;
     TextView correctAnswer;
 
-    String topic;
+    int pos; // topic number
 
+    private static final String TAG = "TopicActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,27 +47,39 @@ public class TopicActivity extends Activity {
 
         Intent launchingIntent = getIntent();
         Bundle b = launchingIntent.getExtras();
-        topic = b.getString("topic");
+        pos = b.getInt("pos");
 
         setContentView(R.layout.topic_layout);
 
         QuizApp quizApp = (QuizApp) getApplication();
-        List<Topic> topics = quizApp.getTopics();
+        List<Topic> topicsList = quizApp.getTopics();
 
         // show the appropriate topic overview page depending on what was clicked in MainActivity
-        if (topic.equals("Math")) {
-            addMathFragment();
-        } else if (topic.equals("Physics")) {
-            addPhysicsFragment();
-        } else {
-            addMarvelFragment();
-        }
+//        if (topic.equals("Science!")) {
+//            addMathFragment();
+//            addScienceFragment();
+//        } else if (topic.equals("Physics")) {
+//            addPhysicsFragment();
+//        } else {
+//            addMarvelFragment();
+//        }
+
+        addOverviewFragment();
 
         submit = (Button) findViewById(R.id.submit_btn);
         yourAnswer = (TextView) findViewById(R.id.your_answer_text);
         correctAnswer = (TextView) findViewById(R.id.correct_answer_text);
         next = (Button) findViewById(R.id.next_btn);
         finish = (Button) findViewById(R.id.finish_btn);
+    }
+
+    private void addOverviewFragment() {
+        OverviewFragment overviewFragment = new OverviewFragment();
+        Bundle info = new Bundle();
+        info.putInt("pos", pos);
+        overviewFragment.setArguments(info);
+        getFragmentManager().beginTransaction().add(R.id.container, overviewFragment).commit();
+
     }
 
     public void loadAnswerFrag(Bundle info) {
@@ -87,35 +101,35 @@ public class TopicActivity extends Activity {
     }
 
 
-    private void addMathFragment() {
-        // creating instance of the HelloWorldFragment.
-        MathFragment mathFragment = new MathFragment();
-        Bundle info = new Bundle();
-        info.putString("topic", topic);
-        mathFragment.setArguments(info);
-        // adding fragment to relative layout by using layout id
-        getFragmentManager().beginTransaction().add(R.id.container, mathFragment).commit();
-    }
-
-    private void addPhysicsFragment() {
-        // creating instance of the HelloWorldFragment.
-        PhysicsFragment physicsFragment = new PhysicsFragment();
-        Bundle info = new Bundle();
-        info.putString("topic", topic);
-        physicsFragment.setArguments(info);
-        // adding fragment to relative layout by using layout id
-        getFragmentManager().beginTransaction().add(R.id.container, physicsFragment).commit();
-    }
-
-    private void addMarvelFragment() {
-        // creating instance of the HelloWorldFragment.
-        MarvelFragment marvelFragment = new MarvelFragment();
-        Bundle info = new Bundle();
-        info.putString("topic", topic);
-        marvelFragment.setArguments(info);
-        // adding fragment to relative layout by using layout id
-        getFragmentManager().beginTransaction().add(R.id.container, marvelFragment).commit();
-    }
+//    private void addMathFragment() {
+//        // creating instance of the HelloWorldFragment.
+//        MathFragment mathFragment = new MathFragment();
+//        Bundle info = new Bundle();
+//        info.putInt("pos", pos);
+//        mathFragment.setArguments(info);
+//        // adding fragment to relative layout by using layout id
+//        getFragmentManager().beginTransaction().add(R.id.container, mathFragment).commit();
+//    }
+//
+//    private void addPhysicsFragment() {
+//        // creating instance of the HelloWorldFragment.
+//        PhysicsFragment physicsFragment = new PhysicsFragment();
+//        Bundle info = new Bundle();
+//        info.putInt("pos", pos);
+//        physicsFragment.setArguments(info);
+//        // adding fragment to relative layout by using layout id
+//        getFragmentManager().beginTransaction().add(R.id.container, physicsFragment).commit();
+//    }
+//
+//    private void addMarvelFragment() {
+//        // creating instance of the HelloWorldFragment.
+//        MarvelFragment marvelFragment = new MarvelFragment();
+//        Bundle info = new Bundle();
+//        info.putInt("pos", pos);
+//        marvelFragment.setArguments(info);
+//        // adding fragment to relative layout by using layout id
+//        getFragmentManager().beginTransaction().add(R.id.container, marvelFragment).commit();
+//    }
 
 
     @Override

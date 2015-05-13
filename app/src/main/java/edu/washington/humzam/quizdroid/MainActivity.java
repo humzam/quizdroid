@@ -3,6 +3,7 @@ package edu.washington.humzam.quizdroid;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,16 +13,36 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.List;
+
 
 public class MainActivity extends ActionBarActivity {
 
-    public String[] topics = {"Math", "Physics", "Marvel Super Heroes"};
+//    public String[] topics = {"Math", "Physics", "Marvel Super Heroes"};
+    public String[] topics;
     private ListView list;
+    public static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("MainActivity", "onCreate fired");
         setContentView(R.layout.activity_main);
+        QuizApp quizApp = (QuizApp) getApplication();
+        List<Topic> topicsList = quizApp.getTopics();
+        topics = new String[topicsList.size()];
+        Log.i("MainActivity", "Topics are " + topicsList.toString());
+        int pos = 0;
+        for (Topic t : topicsList) {
+            if (t == null) {
+                Log.i(TAG, "this topic is null");
+            } else {
+                Log.i(TAG, "not null");
+            }
+            Log.i(TAG, "" + t + " at position " + pos);
+            topics[pos] = t.getTitle();
+            pos++;
+        }
 
         list = (ListView) findViewById(R.id.list_topics);
         ArrayAdapter<String> items = new ArrayAdapter<String>(this, R.layout.list_item, topics);
@@ -32,6 +53,8 @@ public class MainActivity extends ActionBarActivity {
                 // Go bring some other activity around the item selected
                 Intent next = new Intent(MainActivity.this, TopicActivity.class);
                 next.putExtra("topic", topics[position]);
+                next.putExtra("pos", position);
+                Log.i(TAG, "current topic selected is at position = " + position);
                 startActivity(next);
                 finish();
             }
