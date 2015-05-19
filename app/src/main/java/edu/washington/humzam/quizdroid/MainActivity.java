@@ -18,7 +18,6 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
-//    public String[] topics = {"Math", "Physics", "Marvel Super Heroes"};
     public String[] topics;
     private ListView list;
     public static final String TAG = "MainActivity";

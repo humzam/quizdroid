@@ -51,18 +51,6 @@ public class TopicActivity extends Activity {
 
         setContentView(R.layout.topic_layout);
 
-        QuizApp quizApp = (QuizApp) getApplication();
-        List<Topic> topicsList = quizApp.getTopics();
-
-        // show the appropriate topic overview page depending on what was clicked in MainActivity
-//        if (topic.equals("Science!")) {
-//            addMathFragment();
-//            addScienceFragment();
-//        } else if (topic.equals("Physics")) {
-//            addPhysicsFragment();
-//        } else {
-//            addMarvelFragment();
-//        }
 
         addOverviewFragment();
 
@@ -99,38 +87,6 @@ public class TopicActivity extends Activity {
         ft.replace(R.id.container, questionFragment);
         ft.commit();
     }
-
-
-//    private void addMathFragment() {
-//        // creating instance of the HelloWorldFragment.
-//        MathFragment mathFragment = new MathFragment();
-//        Bundle info = new Bundle();
-//        info.putInt("pos", pos);
-//        mathFragment.setArguments(info);
-//        // adding fragment to relative layout by using layout id
-//        getFragmentManager().beginTransaction().add(R.id.container, mathFragment).commit();
-//    }
-//
-//    private void addPhysicsFragment() {
-//        // creating instance of the HelloWorldFragment.
-//        PhysicsFragment physicsFragment = new PhysicsFragment();
-//        Bundle info = new Bundle();
-//        info.putInt("pos", pos);
-//        physicsFragment.setArguments(info);
-//        // adding fragment to relative layout by using layout id
-//        getFragmentManager().beginTransaction().add(R.id.container, physicsFragment).commit();
-//    }
-//
-//    private void addMarvelFragment() {
-//        // creating instance of the HelloWorldFragment.
-//        MarvelFragment marvelFragment = new MarvelFragment();
-//        Bundle info = new Bundle();
-//        info.putInt("pos", pos);
-//        marvelFragment.setArguments(info);
-//        // adding fragment to relative layout by using layout id
-//        getFragmentManager().beginTransaction().add(R.id.container, marvelFragment).commit();
-//    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

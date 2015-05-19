@@ -95,39 +95,9 @@ public class QuestionFragment extends Fragment {
             }
         });
 
-//        if (topic.equals("Math")) {
-//            questions = getMathQuestions();
-//        } else if (topic.equals("Physics")) {
-//            questions = getPhysicsQuestions();
-//        } else {
-//            questions = getMarvelQuestions();
-//        }
-
-//        Log.i("QuestionFrag", "View id =" + getResources().getResourceEntryName(view.getId()));
-
-
-//        if (questions == null ) {
-//            Log.i("QuestFrag", "questions array is null");
-//        }
-//        Log.i("QuestFrag", "questions length = " + questions.size());
-//        Log.i("QuestFrag", "Question is at pos : " + pos + " quest " + questions.get(pos).getQuestion());
-
-
         return view;
 
     }
-
-//    public String[] getTopicsArray() {
-//        QuizApp quizApp = (QuizApp) getActivity().getApplication();
-//        topicsList = quizApp.getTopics();
-//        String []topics = new String[topicsList.size()];
-//        int pos = 0;
-//        for (Topic t : topicsList) {
-//            topics[pos] = t.getTitle();
-//            pos++;
-//        }
-//        return topics;
-//    }
 
 
     // method that returns an string array of all the options for this questions
@@ -160,29 +130,5 @@ public class QuestionFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.hostActivity = activity;
-    }
-
-    public ArrayList<Question> getMathQuestions() {
-        ArrayList<Question> questions = new ArrayList<Question>();
-        questions.add(new Question("What is 1 + 1?", "3", "2", "0", "1", 1));
-        questions.add(new Question("What is the 2 raised to the sixth power?", "64", "4", "16", "32", 0));
-        questions.add(new Question("What is the derivative of 5x^2?", "3x", "10x^2", "5x^2", "10x", 3));
-        return questions;
-    }
-
-    public ArrayList<Question> getPhysicsQuestions() {
-        ArrayList<Question> questions = new ArrayList<Question>();
-        questions.add(new Question("What is the acceleration of an object near the surface of the earth?", "9.8 m/s", "3.14 m/s^2", "4.9 m/s^2", "9.8 m/s^2", 3));
-        questions.add(new Question("An object at rest will stay at rest until acted upon by an external force. This is known as Newton's:", "Second Law", "First Law", "Theory of Inertia", "Third Law", 1));
-        questions.add(new Question("What is the equation for momentum?", "p = m*v", "p = d*v", "p = m * g * v", "p = I * r", 0));
-        return questions;
-    }
-
-    public ArrayList<Question> getMarvelQuestions() {
-        ArrayList<Question> questions = new ArrayList<Question>();
-        questions.add(new Question("Which of the following is NOT a Marvel super hero?", "Spiderman", "Iron Man", "Batman", "Wolverine", 2));
-        questions.add(new Question("What is the Hulk's real name?", "Dr. Banter", "Dr. Brown", "Dr. Bruce Bowen", "Dr. Bruce Banner", 3));
-        questions.add(new Question("Which hero is played by actor Chris Evans?", "Captain America", "Flash", "Wolverine", "Spiderman", 0));
-        return questions;
     }
 }

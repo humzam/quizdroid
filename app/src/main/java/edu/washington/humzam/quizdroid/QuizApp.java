@@ -41,15 +41,6 @@ public class QuizApp extends Application {
         super.onCreate();
         Log.i(TAG, "onCreate fired");
 
-//        try {
-//            InputStream inputStream = getAssets().open("questions.json");
-//            String json = readJSONFile(inputStream);
-//            Log.i(TAG, "json length " + json.length());
-//        } catch (IOException e) {
-//            Log.i(TAG, "file not found");
-//            e.printStackTrace();
-//        }
-
         // Fetch questions.json in assets/ folder
         try {
             InputStream inputStream = getAssets().open("questions.json");

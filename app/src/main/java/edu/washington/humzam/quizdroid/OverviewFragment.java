@@ -44,11 +44,6 @@ public class OverviewFragment extends Fragment {
         }
         getTopicsArray();
 
-//        if (hostActivity instanceof TopicActivity) {
-//            ((TopicActivity) hostActivity).loadOverviewFragment(info);
-//        }
-
-//        String[] topicsArray = getTopicsArray();
         TextView topicTitle = (TextView) view.findViewById(R.id.topic_title);
         TextView topicDesc = (TextView) view.findViewById(R.id.topic_desc);
         TextView totalQuestions = (TextView) view.findViewById(R.id.total_question_text);
