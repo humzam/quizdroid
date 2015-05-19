@@ -103,7 +103,7 @@ public class TopicActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.preferences) {
             return true;
         }
 
