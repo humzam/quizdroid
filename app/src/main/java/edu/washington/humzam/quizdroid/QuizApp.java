@@ -1,8 +1,13 @@
 package edu.washington.humzam.quizdroid;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.nfc.Tag;
 import android.util.Log;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +25,9 @@ public class QuizApp extends Application {
     private static TopicRepository quiz;
     public static final String TAG = "QuizApp";
     private List<Topic> questions;
+    private int interval;
+    private String url;
+    private PendingIntent toastIntent;
 
     public QuizApp() {
         Log.i(TAG, "constructor fired");
@@ -101,6 +109,19 @@ public class QuizApp extends Application {
         inputStream.close();
 
         return new String(buffer, "UTF-8");
+    }
+
+    public void changeUrl(int interval, String url) {
+        this.interval = interval * 60000;
+        this.url = url;
+        Intent makeToast = new Intent(this, CheckQuestions.class);
+        makeToast.putExtra("url", url);
+        AlarmManager alarmManager = (AlarmManager) instance.getSystemService(ALARM_SERVICE);
+        if (toastIntent != null) {
+            alarmManager.cancel(toastIntent);
+        }
+        toastIntent = PendingIntent.getBroadcast(instance, 0, makeToast, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setInexactRepeating(AlarmManager.RTC, 1000, interval, toastIntent);
     }
 
 }

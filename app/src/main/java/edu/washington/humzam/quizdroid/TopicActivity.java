@@ -48,6 +48,14 @@ public class TopicActivity extends Activity {
         Intent launchingIntent = getIntent();
         Bundle b = launchingIntent.getExtras();
         pos = b.getInt("pos");
+        String url;
+        if (launchingIntent.hasExtra("url")) {
+            url = b.getString("url");
+        }
+        int interval;
+        if (launchingIntent.hasExtra("interval")) {
+            interval = b.getInt("interval");
+        }
 
         setContentView(R.layout.topic_layout);
 

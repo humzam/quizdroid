@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/action_settings">
+        <EditTextPreference
+            android:title="Data Location"
+            android:summary="What is the URL for downloading questions?"
+            android:key="url"
+            android:inputType="textUri"/>
+
+        <EditTextPreference
+            android:key="interval"
+            android:title="Update Frequency"
+            android:summary="How often to check for new questions? (minutes)"
+            android:inputType="number"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

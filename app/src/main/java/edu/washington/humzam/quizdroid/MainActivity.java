@@ -79,7 +79,6 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.preferences) {
             Intent setPreferences = new Intent(MainActivity.this, Preferences.class);
             startActivity(setPreferences);
-            finish();
         }
 
         return super.onOptionsItemSelected(item);
