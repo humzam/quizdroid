@@ -3,6 +3,7 @@ package edu.washington.humzam.quizdroid;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -13,6 +14,7 @@ public class CheckQuestions extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String url = intent.getStringExtra("url");
+        Log.i("CheckQuestions", "making toast");
         Toast.makeText(context, "URL to check is " + url, Toast.LENGTH_SHORT).show();
     }
 }
