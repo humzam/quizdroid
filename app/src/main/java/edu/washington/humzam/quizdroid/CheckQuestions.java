@@ -15,6 +15,8 @@ public class CheckQuestions extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String url = intent.getStringExtra("url");
         Log.i("CheckQuestions", "making toast");
-        Toast.makeText(context, "URL to check is " + url, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "URL to check is " + url, Toast.LENGTH_SHORT).show();
+        Intent downloadServiceIntent = new Intent(context, DownloadQuestions.class);
+        context.startService(downloadServiceIntent);
     }
 }

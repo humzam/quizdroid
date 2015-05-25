@@ -16,6 +16,11 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -56,11 +61,42 @@ public class QuizApp extends Application {
         super.onCreate();
         Log.i(TAG, "onCreate fired");
 
+        // this string is where you can specify what file you are looking for inside your data/ directory
+        File myFile = new File(getFilesDir().getAbsolutePath(), "/data.json");
+        String json = "";
+
+        // Let's get the JSON in the files directory! (aka data/data.json which is a hidden folder that you can't access or see unless its from the app itself)
+        // check if data.json file exists in files directory
+        if (myFile.exists()) {
+            Log.i(TAG, "data.json DOES exist");
+
+            try {
+                FileInputStream fis = openFileInput("data.json");      // sweet we found it. openFileInput() takes a string path from your data directory. no need to put 'data/' in your path parameter
+                json = readJSONFile(fis);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        } else {
+            // Can't find data.json file in files directory. Fetch data.json in assets
+            Log.i(TAG, "data.json DOESN'T exist. Fetch from assets");
+
+            try {
+                InputStream inputStream = getAssets().open("data.json");
+                json = readJSONFile(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         // Fetch questions.json in assets/ folder
         try {
-            InputStream inputStream = getAssets().open("questions.json");
-            String json = readJSONFile(inputStream);
-
+//            InputStream inputStream = getAssets().open("questions.json");
+//            String json = readJSONFile(inputStream);
             JSONArray jsonData = new JSONArray(json);
 //            Log.i(TAG, "json length is " + jsonData.length());
             for (int topicNumber = 0; topicNumber < jsonData.length(); topicNumber++) {
@@ -97,17 +133,16 @@ public class QuizApp extends Application {
                 newTopic.setQuestions(questions);
                 this.questions.add(newTopic);
             }
-        } catch (IOException e) {
-            Log.i(TAG, "json thing failed");
-            e.printStackTrace();
         } catch (JSONException e) {
-            Log.i(TAG, "json thing failed");
             e.printStackTrace();
         }
+
+        DownloadQuestions.startOrStopAlarm(this, true);
+
         alarmAlreadySet = false;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         url = sharedPreferences.getString("url", "http://tednewardsandbox.site44.com/questions.json");
-        interval = Integer.parseInt(sharedPreferences.getString("interval", "1")) * 15000;
+        interval = Integer.parseInt(sharedPreferences.getString("interval", "1")) * 60000;
         alarmManager  = (AlarmManager) getSystemService(ALARM_SERVICE);
 
 
@@ -129,6 +164,20 @@ public class QuizApp extends Application {
         quiz.setTopics(questions);
     }
 
+    public void writeToFile(String data) {
+        try {
+            Log.i(TAG, "writing downloaded to file");
+
+            File file = new File(getFilesDir().getAbsolutePath(), "data.json");
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(data.getBytes());
+            fos.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
     // reads InputStream of JSON file and returns the file in JSON String format
     public String readJSONFile(InputStream inputStream) throws IOException {
         int size = inputStream.available();
@@ -138,6 +187,7 @@ public class QuizApp extends Application {
 
         return new String(buffer, "UTF-8");
     }
+
 
     public void changeUrl(String url, int interval) {
 //        this.interval = interval * 15000;
@@ -166,6 +216,15 @@ public class QuizApp extends Application {
 
     public static QuizApp getInstance() {
         return instance;
+    }
+
+    public String readJSONFile(FileInputStream fileInputStream) throws IOException {
+        int size = fileInputStream.available();
+        byte[] buffer = new byte[size];
+        fileInputStream.read(buffer);
+        fileInputStream.close();
+
+        return new String(buffer, "UTF-8");
     }
 
 }

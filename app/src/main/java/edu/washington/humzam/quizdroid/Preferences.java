@@ -15,8 +15,6 @@ import android.widget.EditText;
  */
 public class Preferences extends PreferenceActivity{
 
-    private Button submit;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
